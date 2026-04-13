@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UX Writing Portfolio — Content Strategist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0F1C2E;
+    --paper: #F5F7FA;
+    --warm-mid: #E4EAF2;
+    --accent: #1B4F8A;
+    --accent-light: #D6E4F5;
+    --mid: #5A6A7E;
+    --rule: #C8D4E3;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(245,247,250,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--mid);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 48px 80px;
+    gap: 80px;
+  }
+  .hero-text { max-width: 540px; }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.12; font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero-name em {
+    font-style: italic; color: var(--accent);
+  }
+  .hero-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 300;
+    color: var(--mid); letter-spacing: 0.03em;
+    margin-bottom: 28px;
+  }
+  .hero-desc {
+    font-size: 1rem; line-height: 1.75;
+    color: #3D3830; max-width: 460px;
+    margin-bottom: 40px;
+  }
+  .hero-cta {
+    display: inline-block;
+    padding: 13px 28px;
+    background: var(--ink); color: var(--paper);
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .hero-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+  .hero-stats {
+    display: flex; flex-direction: column; gap: 28px;
+    padding-left: 48px;
+    border-left: 1px solid var(--rule);
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem; font-weight: 600; line-height: 1;
+    color: var(--ink);
+  }
+  .stat-label {
+    font-size: 0.8rem; font-weight: 400;
+    color: var(--mid); margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .stat-divider { width: 32px; height: 1px; background: var(--rule); }
+
+  /* ── SECTION SHELL ── */
+  section { padding: 48px 32px; }
+  section + section { border-top: 1px solid var(--rule); }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 600; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 0.95rem; color: var(--mid);
+    max-width: 520px; line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  /* ── CASE STUDY CARDS ── */
+  .cases { display: flex; flex-direction: column; gap: 0; }
+
+  .case-card {
+    display: grid; grid-template-columns: 1fr 1.6fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    margin-bottom: 24px;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .case-card.visible { opacity: 1; transform: translateY(0); }
+
+  .case-meta {
+    padding: 40px 36px;
+    background: var(--warm-mid);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .case-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 400;
+    color: var(--rule); line-height: 1;
+    margin-bottom: 24px;
+  }
+  .case-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .case-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; line-height: 1.3; font-weight: 600;
+  }
+  .case-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+  .tag {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+  }
+
+  .case-body { padding: 40px 44px; background: var(--paper); }
+  .case-context {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--mid);
+    margin-bottom: 16px;
+  }
+  .case-desc {
+    font-size: 0.97rem; line-height: 1.75; color: #3D3830;
+    margin-bottom: 32px;
+  }
+
+  /* copy block */
+  .copy-block {
+    background: white;
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .copy-block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--mid);
+    margin-bottom: 8px;
+  }
+  .copy-block-text {
+    font-size: 0.97rem; line-height: 1.7; color: var(--ink);
+  }
+
+  /* before/after */
+  .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .ba-box { padding: 18px 20px; }
+  .ba-box.before { background: #FDF0ED; border: 1px solid #C8A090; }
+  .ba-box.after { background: #EAF2FB; border: 1px solid #94BDE0; }
+  .ba-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .ba-box.before .ba-label { color: #B85C38; }
+  .ba-box.after .ba-label { color: #1B5E8A; }
+  .ba-text { font-size: 0.93rem; line-height: 1.6; color: var(--ink); }
+
+  .case-insight {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--accent-light);
+    border-radius: 2px;
+    font-size: 0.88rem; line-height: 1.65; color: #5C2E1A;
+  }
+  .case-insight strong { font-weight: 600; }
+
+  /* ── WEBSITE SECTION ── */
+  .website-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 0; }
+  .web-card {
+    padding: 32px 36px;
+    border: 1px solid var(--rule);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .web-card.visible { opacity: 1; transform: translateY(0); }
+  .web-card-icon {
+    width: 36px; height: 36px;
+    background: var(--accent); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; margin-bottom: 20px;
+  }
+  .web-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .web-card-desc { font-size: 0.9rem; line-height: 1.7; color: #5A5249; }
+  .web-card-quote {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--warm-mid);
+    font-size: 0.88rem; line-height: 1.65;
+    font-style: italic; color: var(--ink);
+    border-left: 2px solid var(--accent);
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .skill-cell {
+    background: var(--paper);
+    padding: 32px 28px;
+  }
+  .skill-cell-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .skill-cell-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .skill-cell-desc { font-size: 0.85rem; line-height: 1.6; color: var(--mid); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 56px 48px;
+    background: var(--ink); color: var(--paper);
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 600;
+  }
+  .footer-sub { font-size: 0.82rem; color: #A89D92; margin-top: 4px; }
+  .footer-note { font-size: 0.8rem; color: #7A7269; text-align: right; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-text > * { animation: fadeUp 0.6s ease both; }
+  .hero-eyebrow  { animation-delay: 0.1s; }
+  .hero-name     { animation-delay: 0.2s; }
+  .hero-title    { animation-delay: 0.3s; }
+  .hero-desc     { animation-delay: 0.4s; }
+  .hero-cta      { animation-delay: 0.5s; }
+  .hero-stats    { animation: fadeUp 0.6s 0.55s ease both; }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { gap: 20px; }
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; }
+    .hero-stats { padding-left: 0; border-left: none; border-top: 1px solid var(--rule); padding-top: 32px; flex-direction: row; flex-wrap: wrap; gap: 24px; }
+    section { padding: 32px 24px; }
+    .case-card { grid-template-columns: 1fr; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .website-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 24px; }
+    .footer-note { text-align: left; }
+  }
+
+  @media print {
+    nav { display: none !important; }
+    .hero { padding-top: 60px !important; }
+    body { padding-top: 0 !important; }
+    *, *::before, *::after {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .case-card, .web-card, .skill-card, .ba-box, .insight-box {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    section {
+      page-break-before: always;
+      break-before: always;
+    }
+    section:first-of-type {
+      page-break-before: avoid;
+      break-before: avoid;
+    }
+    .case-card, .web-card {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Anna Kao</a>
+  <ul class="nav-links">
+    <li><a href="#microcopy">Microcopy</a></li>
+    <li><a href="#localisation">Localisation</a></li>
+    <li><a href="#web">Web</a></li>
+    <li><a href="#work">Campaign</a></li>
+    <li><a href="#skills">Skills</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="border-top:none; padding-top:120px;">
+  <div class="hero-text">
+    <p class="hero-eyebrow">UX Writing · Content Strategy · Traditional Chinese</p>
+    <h1 class="hero-name">Words that<br/><em>guide, convert,</em><br/>and build trust.</h1>
+    <p class="hero-title">Anna Kao <span style="color:var(--rule); margin: 0 8px;">|</span> 高郁雁 <span style="color:var(--rule); margin: 0 8px;">|</span> Content Strategist — Fintech & Digital Products</p>
+    <p class="hero-desc">
+      I craft content that connects business goals with real user needs — from fintech platform copy and KYC onboarding flow optimisation to campaign narratives and enterprise content systems. With 4+ years of experience, I bring both strategic thinking and meticulous craft to every touchpoint.
+    </p>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">4+</div>
+      <div class="stat-label">Years of content & UX writing experience</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Content domains: UX, localisation, web, campaign</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">ZH</div>
+      <div class="stat-label">Traditional Chinese primary writing language</div>
+    </div>
+  </div>
+</section>
+
+<!-- MICROCOPY -->
+<section id="microcopy">
+  <p class="section-label">Selected Work — 01</p>
+  <h2 class="section-heading">UX Microcopy</h2>
+  <p class="section-sub">Small copy, high stakes. Error states, form validation, and system messages that reduce friction at critical user moments.</p>
+
+  <div class="case-card" style="max-width:100%;">
+    <div class="case-meta">
+      <div class="case-num">01</div>
+      <div>
+        <div class="case-type">Error Message Rewrite</div>
+        <div class="case-title">Date Range Validation — Fintech Platform</div>
+        <div class="case-tags">
+          <span class="tag">Microcopy</span>
+          <span class="tag">Fintech</span>
+          <span class="tag">Error State</span>
+          <span class="tag">Form UX</span>
+        </div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-context">Problem</div>
+      <p class="case-desc">
+        Engineers were writing all UI copy directly — resulting in system-logic language that made sense to developers but created confusion for users. Error messages used technical terms, negative framing, and no actionable guidance. I identified this pattern across the product, rewrote the copy from the user's perspective, and formalised the standards into the design system so the whole team could apply them consistently going forward.
+      </p>
+      <div class="ba-grid">
+        <div class="ba-box before">
+          <div class="ba-label">❌ Engineer-written (Before)</div>
+          <div class="ba-text">迄日不可以小於起日</div>
+          <div style="font-size:0.8rem; color:#9B4B2E; margin-top:8px; line-height:1.5;">States a system constraint in developer logic. Uses field variable names (迄日/起日) that are hard to understand at first glance — not what users see on screen. No guidance on how to fix it.</div>
+        </div>
+        <div class="ba-box after">
+          <div class="ba-label">✓ UX rewrite (After)</div>
+          <div class="ba-text">請確認填寫的起始日小於結束日</div>
+          <div style="font-size:0.8rem; color:#2E7A4B; margin-top:8px; line-height:1.5;">Guides the user with 「請確認」. Uses UI label names (起始日/結束日) that match what's on screen. Actionable and human.</div>
+        </div>
+      </div>
+      <div class="case-insight">
+        <strong>Systemic impact:</strong> This wasn't a one-off fix. I audited error states across the product, rewrote them with consistent principles, and documented the guidelines in the design system — giving engineers and designers a shared reference so future copy would be written to the same standard without needing UX writer sign-off on every string.
+      </div>
+      <div style="margin-top:20px;">
+        <div class="copy-block-label" style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid); margin-bottom:12px;">What this demonstrates</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">Cross-functional collaboration</span>
+          <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">Content guideline creation</span>
+          <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">Design system integration</span>
+          <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">Scalable UX writing process</span>
+        </div>
+      </div>
+
+      <div style="margin-top:36px; padding-top:32px; border-top:1px solid var(--rule);">
+        <div class="case-context">Terminology Decision — Task Status Labels</div>
+        <p class="case-desc">
+          During a design review for a task management feature, I identified that two status tags — 未處理 and 待處理 — were being used with overlapping meaning, creating ambiguity for users trying to distinguish between task states.
+        </p>
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid); margin-bottom:12px;">UI Mockup — Recreated for illustration</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div style="background:white; border:1px solid var(--rule); border-radius:4px; overflow:hidden;">
+              <div style="padding:10px 16px; background:var(--warm-mid); border-bottom:1px solid var(--rule); font-size:0.75rem; font-weight:600; letter-spacing:0.05em; color:var(--mid);">BEFORE — Ambiguous labels</div>
+              <div style="padding:16px;">
+                <div style="display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 0; border-bottom:1px solid var(--rule); gap:12px;">
+                  <div><div style="font-size:0.88rem; font-weight:500; color:var(--ink);">業務名單 Q1</div><div style="font-size:0.75rem; color:var(--mid);">2025/01/10</div></div>
+                  <span style="font-size:0.75rem; padding:3px 10px; background:#FEE9E3; color:#C0522A; border-radius:2px; white-space:nowrap;">未處理</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 0; border-bottom:1px solid var(--rule); gap:12px;">
+                  <div><div style="font-size:0.88rem; font-weight:500; color:var(--ink);">業務名單 Q2</div><div style="font-size:0.75rem; color:var(--mid);">2025/03/10</div></div>
+                  <span style="font-size:0.75rem; padding:3px 10px; background:#FEF3E2; color:#B07A20; border-radius:2px; white-space:nowrap;">待處理</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 0; gap:12px;">
+                  <div><div style="font-size:0.88rem; font-weight:500; color:var(--ink);">業務名單 Q4</div><div style="font-size:0.75rem; color:var(--mid);">2024/11/10</div></div>
+                  <span style="font-size:0.75rem; padding:3px 10px; background:#E3F2E8; color:#2E7A4B; border-radius:2px; white-space:nowrap;">已處理</span>
+                </div>
+              </div>
+              <div style="padding:8px 16px; background:#FEF3E2; font-size:0.72rem; color:#9B6A1A;">⚠ 未處理 vs 待處理 — What's the difference?</div>
+            </div>
+            <div style="background:white; border:1px solid var(--rule); border-radius:4px; overflow:hidden;">
+              <div style="padding:10px 16px; background:var(--accent-light); border-bottom:1px solid var(--rule); font-size:0.75rem; font-weight:600; letter-spacing:0.05em; color:var(--accent);">AFTER — Clear, consistent labels</div>
+              <div style="padding:16px;">
+                <div style="display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 0; border-bottom:1px solid var(--rule); gap:12px;">
+                  <div><div style="font-size:0.88rem; font-weight:500; color:var(--ink);">業務名單 Q1</div><div style="font-size:0.75rem; color:var(--mid);">2025/01/10</div></div>
+                  <span style="font-size:0.75rem; padding:3px 10px; background:#FEE9E3; color:#C0522A; border-radius:2px; white-space:nowrap;">未處理</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 0; border-bottom:1px solid var(--rule); gap:12px;">
+                  <div><div style="font-size:0.88rem; font-weight:500; color:var(--ink);">業務名單 Q2</div><div style="font-size:0.75rem; color:var(--mid);">2025/03/10</div></div>
+                  <span style="font-size:0.75rem; padding:3px 10px; background:#E4EEF8; color:#1B4F8A; border-radius:2px; white-space:nowrap;">處理中</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 0; gap:12px;">
+                  <div><div style="font-size:0.88rem; font-weight:500; color:var(--ink);">業務名單 Q4</div><div style="font-size:0.75rem; color:var(--mid);">2024/11/10</div></div>
+                  <span style="font-size:0.75rem; padding:3px 10px; background:#E3F2E8; color:#2E7A4B; border-radius:2px; white-space:nowrap;">已處理</span>
+                </div>
+              </div>
+              <div style="padding:8px 16px; background:var(--accent-light); font-size:0.72rem; color:var(--accent);">✓ Three distinct states, zero ambiguity</div>
+            </div>
+          </div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-box before">
+            <div class="ba-label">❌ Problem</div>
+            <div class="ba-text">未處理 ＆ 待處理</div>
+            <div style="font-size:0.8rem; color:#9B4B2E; margin-top:8px; line-height:1.5;">Two tags with near-identical meaning used simultaneously — semantically too close to help users distinguish task states clearly.</div>
+          </div>
+          <div class="ba-box after">
+            <div class="ba-label">✓ Recommendation</div>
+            <div class="ba-text">未處理 only</div>
+            <div style="font-size:0.8rem; color:#1B5E8A; margin-top:8px; line-height:1.5;">Retain one term. 未處理 was chosen for its stronger urgency signal and clearer semantic meaning — directly communicating that action is required.</div>
+          </div>
+        </div>
+        <div class="case-insight">
+          <strong>Why it matters:</strong> In task management, status labels directly affect how users prioritise their work. When two labels carry the same meaning, users lose trust in the system. This was a verbal recommendation made during design review — showing that content decisions happen in collaboration, not just in a doc.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCALISATION -->
+<section id="localisation">
+  <p class="section-label">Selected Work — 02</p>
+  <h2 class="section-heading">Localisation</h2>
+  <p class="section-sub">Bridging content and engineering — owning terminology decisions while collaborating directly with developers on i18n implementation.</p>
+
+  <div class="cases">
+    <div class="case-card">
+      <div class="case-meta">
+        <div class="case-num">02</div>
+        <div>
+          <div class="case-type">i18n Localisation</div>
+          <div class="case-title">Traditional Chinese to English — Product String Localisation</div>
+          <div class="case-tags">
+            <span class="tag">Localisation</span>
+            <span class="tag">i18n</span>
+            <span class="tag">Vue.js</span>
+            <span class="tag">Cross-functional</span>
+            <span class="tag">Fintech</span>
+          </div>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-context">Context</div>
+        <p class="case-desc">
+          The product needed to support both Traditional Chinese and English — requiring all hardcoded UI strings to be extracted and replaced with i18n variables in Vue. Rather than simply handing a translation spreadsheet to the development team, I worked directly in the localisation process: owning all naming and terminology decisions while the developer handled the technical implementation.
+        </p>
+        <div class="copy-block">
+          <div class="copy-block-label">My Contribution</div>
+          <div class="copy-block-text">
+            I was responsible for determining how each Traditional Chinese UI string should be expressed in English — ensuring the translated copy was not just accurate, but contextually appropriate for a fintech product audience. This included UI labels, status messages, navigation items, and action buttons.
+          </div>
+        </div>
+        <div class="copy-block">
+          <div class="copy-block-label">How We Worked Together</div>
+          <div class="copy-block-text">
+            The developer replaced hardcoded strings with Vue i18n variables and managed the technical structure. I provided the terminology decisions and reviewed the output in context — catching cases where a literal translation didn't fit the UI space or user expectation.
+          </div>
+        </div>
+        <div class="case-insight">
+          <strong>Why this matters:</strong> Localisation is more than translation — it requires understanding how words behave in UI constraints, how tone shifts across languages, and how terminology choices affect the entire product consistently. Working directly alongside engineering meant fewer handoff errors and faster iteration.
+        </div>
+        <div style="margin-top:20px;">
+          <div class="copy-block-label" style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid); margin-bottom:12px;">What this demonstrates</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">i18n process knowledge</span>
+            <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">TC → EN terminology ownership</span>
+            <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">Engineering collaboration</span>
+            <span style="font-size:0.8rem; padding:5px 12px; background:var(--warm-mid); color:var(--ink);">Fintech product context</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEBSITE CONTENT -->
+<section id="web">
+  <p class="section-label">Selected Work — 03</p>
+  <h2 class="section-heading">Website Content Strategy</h2>
+  <p class="section-sub">Enterprise B2B content for SoftBI — a leading fintech solutions provider serving wealth management and private banking institutions across Taiwan, China, and the Asia-Pacific region.</p>
+
+  <div class="website-grid">
+    <div class="web-card">
+      <div class="web-card-icon">H</div>
+      <div class="web-card-title">Hero Positioning Copy</div>
+      <div class="web-card-desc">Crafted the homepage headline and value proposition for a B2B fintech audience of banking decision-makers. Required balancing technical credibility with executive-level accessibility.</div>
+      <div class="web-card-quote">"Top Financial Solution Provider — Wealth Management System & Private Banking System"</div>
+    </div>
+    <div class="web-card">
+      <div class="web-card-icon">M</div>
+      <div class="web-card-title">Market Authority Statement</div>
+      <div class="web-card-desc">Transformed raw market data into persuasive social proof copy — framing SoftBI's dominant market position as a trust signal for prospective enterprise clients.</div>
+      <div class="web-card-quote">"80% of WM banks in Taiwan are using BiWMS. 60% of PB banks in China are using BiPBS."</div>
+    </div>
+    <div class="web-card">
+      <div class="web-card-icon">P</div>
+      <div class="web-card-title">Product Suite Naming & Descriptions</div>
+      <div class="web-card-desc">Developed consistent nomenclature and short-form descriptions for 8 product lines (BiPBS, BiWMS, BiCRM, BiMPC, BiSQS, BiRobot, BiSSS, BiSIC) — ensuring clarity across a complex product portfolio.</div>
+      <div class="web-card-quote">Coherent naming architecture: product family prefix (Bi-) + function-coded suffix, supporting both recall and discoverability.</div>
+    </div>
+    <div class="web-card">
+      <div class="web-card-icon">V</div>
+      <div class="web-card-title">Vision & Expansion Narrative</div>
+      <div class="web-card-desc">Wrote the company vision statement connecting domestic market leadership to regional ambition — targeting the Greater China area, Japan, and Asia-Pacific expansion story.</div>
+      <div class="web-card-quote">Positioned SoftBI as the most experienced financial engineering and wealth management integration company nationally, with a forward-looking regional scope.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPAIGN -->
+<section id="work">
+  <p class="section-label">Selected Work — 04</p>
+  <h2 class="section-heading">Campaign Copywriting</h2>
+  <p class="section-sub">Strategic narratives built around customer insight, conversion behaviour, and brand positioning.</p>
+
+  <div class="cases">
+    <div class="case-card">
+      <div class="case-meta">
+        <div class="case-num">04</div>
+        <div>
+          <div class="case-type">Service Campaign</div>
+          <div class="case-title">Interior Design Studio — 讓利放量 Lead Generation Strategy</div>
+          <div class="case-tags">
+            <span class="tag">Copywriting</span>
+            <span class="tag">B2C Service</span>
+            <span class="tag">Strategy</span>
+            <span class="tag">Two Concepts</span>
+          </div>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-context">Context & Brief</div>
+        <p class="case-desc">
+          An interior design studio needed to attract new clients and convert consultation enquiries into booked appointments. To frame the strategic direction, I referenced Helena Rubinstein's Taiwan re-entry campaign — where anniversary offers and bundled incentives successfully lowered the barrier for first-time buyers. This real-world precedent informed the core concept: 讓利放量 (cut prices to boost volume) — giving without cheapening the brand.
+        </p>
+        <div class="copy-block">
+          <div class="copy-block-label">Strategic Reference — 讓利放量</div>
+          <div class="copy-block-text">
+            In competitive markets, price incentives can more than double inbound volume while variable costs remain manageable — as seen in promotions like Starbucks' buy-one-get-one events. The insight: use partial cost absorption strategically to remove hesitation, not to signal desperation.
+          </div>
+        </div>
+        <div class="copy-block">
+          <div class="copy-block-label">Concept A — Value Framing (Budget-Conscious Homeowners)</div>
+          <div class="copy-block-text">
+            「我們透過裝修費用做部分讓利，讓業主可以沒有壓力的諮詢。」<br/>
+            <span style="font-size:0.88rem; color:var(--mid); display:block; margin-top:6px;">The studio absorbs part of the renovation cost — reframing consultation as risk-free. Targets homeowners who want quality but feel budget pressure. Lowers the mental barrier to making the first enquiry.</span>
+          </div>
+        </div>
+        <div class="copy-block">
+          <div class="copy-block-label">Concept B — Efficiency Framing (Busy Professionals)</div>
+          <div class="copy-block-text">
+            「六週完工保證 — 不止好，而且又快又好。」<br/>
+            <span style="font-size:0.88rem; color:var(--mid); display:block; margin-top:6px;">Targets working homeowners whose primary pain point is time, not cost. The 6-week completion guarantee converts uncertainty into a concrete promise — and helps the studio manage production capacity more efficiently.</span>
+          </div>
+        </div>
+        <div class="case-insight">
+          <strong>Strategic thinking:</strong> The two concepts address two different customer anxieties — cost and time — using real behavioural insight rather than generic messaging. The foreword grounds both concepts in market evidence, showing the business case behind the creative direction.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="skills">
+  <p class="section-label">Capabilities</p>
+  <h2 class="section-heading">What I bring to a content team</h2>
+  <p class="section-sub">From writing individual microcopy strings to building systems that scale across products and teams.</p>
+
+  <div class="skills-grid">
+    <div class="skill-cell">
+      <div class="skill-cell-label">01</div>
+      <div class="skill-cell-name">UX Writing</div>
+      <div class="skill-cell-desc">Microcopy, error states, KYC onboarding flow optimisation, and terminology decisions — written and refined with clarity and user intent in mind.</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-cell-label">02</div>
+      <div class="skill-cell-name">Campaign Copywriting</div>
+      <div class="skill-cell-desc">Conversion-focused campaign narratives grounded in customer journey mapping and behavioural insight.</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-cell-label">03</div>
+      <div class="skill-cell-name">Content Strategy</div>
+      <div class="skill-cell-desc">Building content frameworks, messaging hierarchies, and guidelines that multiple teams can adopt and scale.</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-cell-label">04</div>
+      <div class="skill-cell-name">Localisation</div>
+      <div class="skill-cell-desc">Traditional Chinese writing, terminology management, and culturally-adapted content for digital products.</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-cell-label">05</div>
+      <div class="skill-cell-name">Stakeholder Collaboration</div>
+      <div class="skill-cell-desc">Cross-functional experience with product, design, engineering, and marketing teams — including building reference materials for PM and client discussions.</div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-cell-label">06</div>
+      <div class="skill-cell-name">Fintech Domain</div>
+      <div class="skill-cell-desc">Deep familiarity with wealth management, private banking, and financial product content requirements.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-name">Anna Kao · 高郁雁</div>
+    <div class="footer-sub">UX Writing · Campaign Copy · Traditional Chinese · Fintech</div>
+  </div>
+  <div class="footer-note">
+    Portfolio prepared for Content Strategist application<br/>
+    Taipei, Taiwan · 2026
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll-in animations
+  document.querySelectorAll('.case-card, .web-card').forEach(el => {
+    el.classList.add('visible');
+  });
+</script>
+</body>
+</html>
